@@ -1,5 +1,80 @@
 # StayFinder Documentation
 
+## Project Setup and Running Instructions
+
+### Prerequisites
+
+- Node.js (Latest LTS version recommended)
+- MongoDB installed and running
+- Gmail account for SMTP
+
+### Environment Setup
+
+1. Create `.env.local` file in the root directory with the following variables:
+
+   ```
+   SMTP_USER=your_gmail@gmail.com
+   SMTP_PASS=your_gmail_app_password
+   ABSTRACT_KEY=your_abstract_api_key
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Project
+
+#### Development Mode
+
+1. Start the frontend (Next.js):
+
+   ```bash
+   npm run dev
+   ```
+
+   Frontend will run on: http://localhost:3000
+
+2. Start the backend (Express):
+   ```bash
+   cd backend
+   nodemon server.js
+   ```
+   Backend will run on: http://localhost:5000
+
+#### Production Mode
+
+1. Build the frontend:
+
+   ```bash
+   npm run build
+   ```
+
+2. Start the production server:
+   ```bash
+   npm start
+   ```
+
+### Project Structure
+
+```
+stayfinder/
+├── backend/           # Express backend
+│   ├── controllers/   # Route controllers
+│   ├── models/        # Database models
+│   ├── routes/        # API routes
+│   ├── utils/         # Utility functions
+│   └── server.js      # Backend entry point
+├── src/              # Next.js frontend
+│   ├── app/          # App router pages
+│   ├── components/   # React components
+│   └── context/      # React context
+├── public/           # Static files
+└── package.json      # Project dependencies
+```
+
 ## Overview
 
 StayFinder is a modern web application built with Next.js and Node.js, featuring a robust authentication system and user management.
