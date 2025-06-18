@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema(
       token: String,
       expiresAt: Date,
     },
+    bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Booking" }],
+    listings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Listing" }],
+    profileImage: { type: String },
+    bio: { type: String },
   },
   {
     timestamps: true,

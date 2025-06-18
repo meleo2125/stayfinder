@@ -6,6 +6,8 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env.local") });
 
 const authRoutes = require("./routes/authRoutes");
+const listingRoutes = require("./routes/listingRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 const app = express();
 
@@ -13,7 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.NEXTAUTH_URL,
+    origin: [process.env.NEXTAUTH_URL, "http://localhost:3000"].filter(Boolean),
     credentials: true,
   })
 );
@@ -49,6 +51,8 @@ mongoose
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/listings", listingRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
