@@ -1,17 +1,42 @@
 # StayFinder Documentation
 
-## Project Setup and Running Instructions
+## Overview
+
+StayFinder is a modern, travel-focused property rental platform inspired by Airbnb. It features a beautiful, minimal UI, robust authentication, property listings, booking, and a full-featured host dashboard. Built with Next.js, Tailwind CSS, Node.js/Express, and MongoDB.
+
+- **Frontend:** Next.js (TypeScript), Tailwind CSS, React Context API
+- **Backend:** Node.js, Express.js, MongoDB (Mongoose)
+- **Design:** Modern, minimal, travel-inspired (see [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md))
+- **Features:** Authentication, property search, listing details, booking, reviews, host dashboard, dynamic mesh-gradient backgrounds
+
+---
+
+## Table of Contents
+
+- [Project Setup](#project-setup)
+- [Design System](#design-system)
+- [Tech Stack](#tech-stack)
+- [Core Features](#core-features)
+- [API Endpoints](#api-endpoints)
+- [Frontend Pages](#frontend-pages)
+- [Database Schema](#database-schema)
+- [Environment Variables](#environment-variables)
+- [Security Considerations](#security-considerations)
+- [Future Improvements](#future-improvements)
+
+---
+
+## Project Setup
 
 ### Prerequisites
 
-- Node.js (Latest LTS version recommended)
-- MongoDB installed and running
+- Node.js (Latest LTS recommended)
+- MongoDB
 - Gmail account for SMTP
 
 ### Environment Setup
 
-1. Create `.env.local` file in the root directory with the following variables:
-
+1. Create `.env.local` in the root directory:
    ```
    SMTP_USER=your_gmail@gmail.com
    SMTP_PASS=your_gmail_app_password
@@ -19,7 +44,6 @@
    MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    ```
-
 2. Install dependencies:
    ```bash
    npm install
@@ -27,148 +51,164 @@
 
 ### Running the Project
 
-#### Development Mode
+#### Development
 
-1. Start the frontend (Next.js):
+- Start frontend:
+  ```bash
+  npm run dev
+  ```
+  (http://localhost:3000)
+- Start backend:
+  ```bash
+  cd backend
+  nodemon server.js
+  ```
+  (http://localhost:5000)
 
-   ```bash
-   npm run dev
-   ```
+#### Production
 
-   Frontend will run on: http://localhost:3000
+- Build frontend:
+  ```bash
+  npm run build
+  ```
+- Start production server:
+  ```bash
+  npm start
+  ```
 
-2. Start the backend (Express):
-   ```bash
-   cd backend
-   nodemon server.js
-   ```
-   Backend will run on: http://localhost:5000
+---
 
-#### Production Mode
+## Design System
 
-1. Build the frontend:
+StayFinder uses a modern, minimal, travel-inspired design system with a custom color palette (teal, sand, coral, grays), Inter and Poppins fonts, and a clean, responsive layout. All core pages feature:
 
-   ```bash
-   npm run build
-   ```
+- **Animated mesh-gradient backgrounds** with blobs, grid, particles, and light rays
+- **Reusable components:** Button, Input, Card, Navigation, etc.
+- **Consistent spacing, border radius, and shadows**
+- **Accessible, mobile-first design**
 
-2. Start the production server:
-   ```bash
-   npm start
-   ```
+See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for full details, color codes, and component usage.
 
-### Project Structure
-
-```
-stayfinder/
-├── backend/           # Express backend
-│   ├── controllers/   # Route controllers
-│   ├── models/        # Database models
-│   ├── routes/        # API routes
-│   ├── utils/         # Utility functions
-│   └── server.js      # Backend entry point
-├── src/              # Next.js frontend
-│   ├── app/          # App router pages
-│   ├── components/   # React components
-│   └── context/      # React context
-├── public/           # Static files
-└── package.json      # Project dependencies
-```
-
-## Overview
-
-StayFinder is a modern web application built with Next.js and Node.js, featuring a robust authentication system and user management.
+---
 
 ## Tech Stack
 
 ### Frontend
 
-- **Framework**: Next.js 15.3.3 with TypeScript
-- **Styling**: Tailwind CSS
-- **State Management**: React Context API
-- **Authentication**: Custom authentication with JWT and session management
+- **Next.js 15+ (TypeScript)**
+- **Tailwind CSS**
+- **React Context API**
+- **Custom UI components**
 
 ### Backend
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB with Mongoose ODM
-- **Email Service**: Nodemailer with Gmail SMTP
-- **Password Hashing**: bcryptjs
-- **Email Validation**: Abstract API
+- **Node.js + Express.js**
+- **MongoDB (Mongoose)**
+- **Nodemailer (Gmail SMTP)**
+- **bcryptjs**
+- **Abstract API (email validation)**
+
+---
 
 ## Core Features
 
-### Authentication System
+### Authentication & User Management
 
-1. **User Registration**
+- Email validation, OTP verification, password hashing
+- Password reset with secure token
+- JWT/session management
+- User profile with image, bio, bookings, and listings
 
-   - Email validation using Abstract API
-   - Password hashing with bcryptjs
-   - Email verification with OTP
-   - OTP expiration after 10 minutes
+### Property Listings & Search
 
-2. **User Login**
+- Dynamic property grid on homepage
+- Listing detail page with images, amenities, reviews, and booking calendar
+- Search/filter (planned)
 
-   - Session-based authentication
-   - JWT token management
-   - 24-hour session expiration
-   - Secure password comparison
+### Booking System
 
-3. **Password Reset Flow**
-   - Secure token generation using crypto
-   - 15-minute token expiration
-   - Email-based reset link
-   - Password confirmation
-   - Automatic redirect to login
+- Book properties with date/guest selection
+- View bookings in user profile
+- Booking status: upcoming, completed, cancelled, listing deleted
 
-### Security Features
+### Reviews
 
-- Password hashing with bcryptjs (12 rounds)
-- Secure session management
-- Email verification
-- Token-based password reset
-- CORS protection
-- Environment variable configuration
+- Leave/edit reviews on listings (1-5 stars, text)
+- Average rating and review count per listing
 
-### Email System
+### Host Dashboard
 
-- Gmail SMTP integration
-- HTML email templates
-- OTP delivery
-- Password reset link delivery
-- Error handling and logging
+- Host login/register (separate from user)
+- Create, edit, archive, and manage property listings
+- View bookings per listing
+- Archive listings (optionally cancel future bookings)
+- Host listing detail page with reviews and stats
+
+### UI/UX Enhancements
+
+- Animated mesh-gradient backgrounds on all auth and core pages
+- Responsive, mobile-first layouts
+- Accessible forms and navigation
+- Modern, minimal, travel-focused look
+
+---
 
 ## API Endpoints
 
-### Authentication Routes
+### Authentication
 
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/verify-otp` - Email verification
-- `POST /api/auth/login` - User login
-- `POST /api/auth/forgot-password` - Password reset request
-- `GET /api/auth/verify-reset-token/:token` - Token validation
-- `POST /api/auth/reset-password` - Password reset
+- `POST /api/auth/register` — User registration
+- `POST /api/auth/verify-otp` — Email verification
+- `POST /api/auth/login` — User login
+- `POST /api/auth/forgot-password` — Password reset request
+- `GET /api/auth/verify-reset-token/:token` — Token validation
+- `POST /api/auth/reset-password` — Password reset
+
+### Listings
+
+- `GET /api/listings` — Get all listings
+- `POST /api/listings` — Create new listing (host)
+- `GET /api/listings/:id` — Get listing by ID
+- `PUT /api/listings/:id` — Update listing (host)
+- `DELETE /api/listings/:id` — Delete listing (host)
+- `PATCH /api/listings/:id/archive` — Archive listing (host)
+- `PATCH /api/listings/:id/unarchive` — Unarchive listing (host)
+- `GET /api/listings/:id/reviews` — Get reviews for listing
+- `POST /api/listings/:id/reviews` — Create/update review
+
+### Bookings
+
+- `POST /api/bookings` — Create booking
+- `GET /api/bookings/user/:id` — Get bookings for user
+- `GET /api/bookings/listing/:id` — Get bookings for listing
+
+---
 
 ## Frontend Pages
 
-### Public Routes
+### Public
 
-- `/login` - User login
-- `/register` - User registration
-- `/verify-otp` - Email verification
-- `/forgot-password` - Password reset request
-- `/change-password/[token]` - Password reset form
+- `/login` — User login (animated background)
+- `/register` — User registration (animated background)
+- `/verify-otp` — Email verification (animated background)
+- `/forgot-password` — Password reset request (animated background)
+- `/change-password/[token]` — Password reset form (animated background)
 
-### Protected Routes
+### Protected
 
-- `/` - Home page (requires authentication)
+- `/` — Home (property grid, search, stats)
+- `/listings/[id]` — Listing detail (images, amenities, booking, reviews)
+- `/profile` — User profile (bookings, stats)
+- `/host` — Host dashboard (manage listings)
+- `/host/listings/[id]` — Host listing detail (stats, reviews)
+
+---
 
 ## Database Schema
 
-### User Model
+### User
 
-```javascript
+```js
 {
   firstName: String,
   lastName: String,
@@ -176,59 +216,87 @@ StayFinder is a modern web application built with Next.js and Node.js, featuring
   password: String (hashed),
   dob: Date,
   isVerified: Boolean,
-  otp: {
-    code: String,
-    expiresAt: Date
-  },
-  resetPasswordToken: {
-    token: String,
-    expiresAt: Date
-  }
+  otp: { code: String, expiresAt: Date },
+  resetPasswordToken: { token: String, expiresAt: Date },
+  bookings: [ObjectId],
+  listings: [ObjectId],
+  profileImage: String,
+  bio: String
 }
 ```
 
+### Listing
+
+```js
+{
+  title: String,
+  description: String,
+  location: String,
+  pricePerNight: Number,
+  bedrooms: Number,
+  bathrooms: Number,
+  maxGuests: Number,
+  amenities: [String],
+  images: [String],
+  host: { _id: String, name: String, profileImage: String },
+  reviews: [{ user: ObjectId, rating: Number, review: String, createdAt, updatedAt }],
+  isArchived: Boolean,
+  archivedAt: Date
+}
+```
+
+### Booking
+
+```js
+{
+  userId: ObjectId,
+  listingId: ObjectId,
+  checkInDate: Date,
+  checkOutDate: Date,
+  numberOfGuests: Number,
+  totalPrice: Number,
+  status: 'pending' | 'confirmed' | 'cancelled' | 'listing_deleted',
+  cancelReason: String
+}
+```
+
+---
+
 ## Environment Variables
 
-Required environment variables:
+- `SMTP_USER` — Gmail SMTP username
+- `SMTP_PASS` — Gmail SMTP password
+- `ABSTRACT_KEY` — Abstract API key for email validation
+- `MONGODB_URI` — MongoDB connection string
+- `JWT_SECRET` — JWT secret key
 
-- `SMTP_USER` - Gmail SMTP username
-- `SMTP_PASS` - Gmail SMTP password
-- `ABSTRACT_KEY` - Abstract API key for email validation
-- MongoDB connection string
-- JWT secret key
+---
 
 ## Security Considerations
 
-1. **Password Security**
+- Passwords hashed with bcryptjs (12 rounds)
+- Email verification and OTP expiration
+- Secure session and token management
+- CORS protection
+- Environment variable configuration
 
-   - Passwords are hashed using bcryptjs
-   - Password confirmation required for registration and reset
-   - Password reset tokens expire after 15 minutes
-
-2. **Email Security**
-
-   - Email verification required for account activation
-   - OTP expiration after 10 minutes
-   - Secure email delivery using Gmail SMTP
-
-3. **Session Security**
-   - 24-hour session expiration
-   - Secure session storage
-   - Protected routes implementation
-
-## Error Handling
-
-- Comprehensive error handling on both frontend and backend
-- User-friendly error messages
-- Proper HTTP status codes
-- Error logging for debugging
+---
 
 ## Future Improvements
 
-1. Add rate limiting for API endpoints
-2. Implement refresh token mechanism
-3. Add social authentication
-4. Enhance email templates
-5. Add user profile management
-6. Implement password strength requirements
-7. Add two-factor authentication
+- Rate limiting for API endpoints
+- Refresh token mechanism
+- Social authentication
+- Enhanced email templates
+- User profile management (edit profile, upload image)
+- Password strength requirements
+- Two-factor authentication
+- Advanced search/filter for listings
+- Calendar availability and pricing
+- Host analytics dashboard
+
+---
+
+## Contributing
+
+See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for UI guidelines. PRs and issues welcome!
