@@ -97,11 +97,11 @@ export default function Login() {
         {/* Login Form */}
         <Card padding="lg" className="shadow-xl border-0 animate-fade-in">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {(error || authError) && (
+          {(error || authError) && (
               <div className="bg-error-50 border border-error-200 text-error-600 px-4 py-3 rounded-lg text-sm">
-                {error || authError}
-              </div>
-            )}
+              {error || authError}
+            </div>
+          )}
             
             <div className="space-y-4">
               <Input
@@ -135,11 +135,11 @@ export default function Login() {
                   </svg>
                 }
               />
-            </div>
+          </div>
 
-            <div>
+          <div>
               <Button
-                type="submit"
+              type="submit"
                 variant="primary"
                 size="lg"
                 isLoading={isLoading}
@@ -147,8 +147,8 @@ export default function Login() {
               >
                 Sign in
               </Button>
-            </div>
-          </form>
+          </div>
+        </form>
 
           {/* Links */}
           <div className="mt-6 space-y-4">
@@ -157,9 +157,9 @@ export default function Login() {
                 href="/forgot-password" 
                 className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
               >
-                Forgot your password?
-              </Link>
-            </div>
+            Forgot your password?
+          </Link>
+        </div>
             
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -188,6 +188,14 @@ export default function Login() {
             {' '}and{' '}
             <a href="#" className="text-primary-600 hover:text-primary-700">Privacy Policy</a>
           </p>
+          <div className="mt-4">
+            <Link 
+              href="/host" 
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              Login as Host
+          </Link>
+          </div>
         </div>
       </div>
     </div>

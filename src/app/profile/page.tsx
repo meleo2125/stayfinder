@@ -21,6 +21,7 @@ interface Booking {
   totalPrice: number;
   status: string;
   createdAt: string;
+  cancelReason?: string;
 }
 
 export default function ProfilePage() {
@@ -61,6 +62,7 @@ export default function ProfilePage() {
     const today = new Date();
     const checkIn = new Date(checkInDate);
     
+    if (status === 'listing_deleted') return 'Listing Deleted';
     if (status === 'cancelled') return 'Cancelled';
     if (checkIn < today) return 'Completed';
     return 'Upcoming';
@@ -68,6 +70,7 @@ export default function ProfilePage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
+      case 'Listing Deleted': return 'text-orange-700 bg-orange-100';
       case 'Upcoming': return 'text-blue-600 bg-blue-100';
       case 'Completed': return 'text-green-600 bg-green-100';
       case 'Cancelled': return 'text-red-600 bg-red-100';
@@ -83,13 +86,15 @@ export default function ProfilePage() {
     });
   };
 
-  const upcomingBookings = bookings.filter(booking => 
-    getBookingStatus(booking.checkInDate, booking.status) === 'Upcoming'
-  );
+  const upcomingBookings = bookings.filter(booking => {
+    const status = getBookingStatus(booking.checkInDate, booking.status);
+    return status === 'Upcoming' || (booking.status === 'listing_deleted' && new Date(booking.checkInDate) > new Date());
+  });
 
-  const pastBookings = bookings.filter(booking => 
-    getBookingStatus(booking.checkInDate, booking.status) === 'Completed'
-  );
+  const pastBookings = bookings.filter(booking => {
+    const status = getBookingStatus(booking.checkInDate, booking.status);
+    return status === 'Completed' || (booking.status === 'listing_deleted' && new Date(booking.checkInDate) <= new Date());
+  });
 
   if (!isAuthenticated) {
     return null;
@@ -184,6 +189,13 @@ export default function ProfilePage() {
                             <span>Check-out: {formatDate(booking.checkOutDate)}</span>
                             <span>{booking.numberOfGuests} guest{booking.numberOfGuests > 1 ? 's' : ''}</span>
                           </div>
+                          {booking.status === 'listing_deleted' && (
+                            <div className="mt-3 p-3 rounded bg-orange-50 border border-orange-200 text-orange-800 text-sm">
+                              <strong>This listing has been deleted by the host.</strong><br />
+                              {booking.cancelReason && <span>Reason: {booking.cancelReason}</span>}
+                              {!booking.cancelReason && <span>Your booking was cancelled because the listing was removed.</span>}
+                            </div>
+                          )}
                         </div>
                         <div className="text-right">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(getBookingStatus(booking.checkInDate, booking.status))}`}>
@@ -234,6 +246,13 @@ export default function ProfilePage() {
                             <span>Check-out: {formatDate(booking.checkOutDate)}</span>
                             <span>{booking.numberOfGuests} guest{booking.numberOfGuests > 1 ? 's' : ''}</span>
                           </div>
+                          {booking.status === 'listing_deleted' && (
+                            <div className="mt-3 p-3 rounded bg-orange-50 border border-orange-200 text-orange-800 text-sm">
+                              <strong>This listing was deleted by the host.</strong><br />
+                              {booking.cancelReason && <span>Reason: {booking.cancelReason}</span>}
+                              {!booking.cancelReason && <span>Your booking was cancelled because the listing was removed.</span>}
+                            </div>
+                          )}
                         </div>
                         <div className="text-right">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(getBookingStatus(booking.checkInDate, booking.status))}`}>

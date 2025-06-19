@@ -213,11 +213,6 @@ export default function Register() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 disabled={isLoading}
-                leftIcon={
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                }
               />
           </div>
 
@@ -263,6 +258,14 @@ export default function Register() {
             {' '}and{' '}
             <a href="#" className="text-primary-600 hover:text-primary-700">Privacy Policy</a>
           </p>
+          <div className="mt-4">
+            <Link 
+              href="/host" 
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              Register as Host
+          </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -111,22 +111,22 @@ export default function VerifyOTP() {
         {/* OTP Verification Form */}
         <Card padding="lg" className="shadow-xl border-0 animate-fade-in">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
+          {error && (
               <div className="bg-error-50 border border-error-200 text-error-600 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+              {error}
+            </div>
+          )}
             
             <div className="space-y-4">
               <Input
                 label="Verification Code"
-                name="otp"
-                type="text"
-                required
-                maxLength={6}
-                placeholder="Enter 6-digit code"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
+              name="otp"
+              type="text"
+              required
+              maxLength={6}
+              placeholder="Enter 6-digit code"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
                 disabled={isLoading}
                 helperText="Check your email for the verification code"
                 leftIcon={
@@ -134,12 +134,12 @@ export default function VerifyOTP() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 }
-              />
-            </div>
+            />
+          </div>
 
-            <div>
+          <div>
               <Button
-                type="submit"
+              type="submit"
                 variant="primary"
                 size="lg"
                 isLoading={isLoading}

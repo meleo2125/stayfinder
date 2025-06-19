@@ -3,6 +3,10 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
+import { AlertProvider } from "@/context/AlertContext";
+import { HostAuthProvider } from '@/context/HostAuthContext';
+import NotificationTile from '@/components/NotificationTile';
+import NotificationFeedWrapper from '@/components/NotificationFeedWrapper';
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -34,11 +38,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className={`${inter.className} antialiased`}>
+        <HostAuthProvider>
         <AuthProvider>
-          <NotificationProvider>
-            {children}
-          </NotificationProvider>
+            <NotificationProvider>
+              <AlertProvider>
+                <NotificationFeedWrapper>
+          {children}
+                </NotificationFeedWrapper>
+              </AlertProvider>
+            </NotificationProvider>
         </AuthProvider>
+        </HostAuthProvider>
       </body>
     </html>
   );

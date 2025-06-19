@@ -8,6 +8,8 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env.local") });
 const authRoutes = require("./routes/authRoutes");
 const listingRoutes = require("./routes/listingRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
+const hostAuthRoutes = require("./routes/hostAuthRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 const app = express();
 
@@ -53,6 +55,8 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/host", hostAuthRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

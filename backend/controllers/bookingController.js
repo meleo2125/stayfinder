@@ -1,4 +1,5 @@
 const Booking = require("../models/Booking");
+const Listing = require("../models/Listing");
 const mongoose = require("mongoose");
 
 // POST /bookings - create a booking
@@ -33,6 +34,17 @@ exports.createBooking = async (req, res) => {
       !mongoose.Types.ObjectId.isValid(listingId)
     ) {
       return res.status(400).json({ message: "Invalid userId or listingId" });
+    }
+
+    // Check if listing is archived
+    const listing = await Listing.findById(listingId);
+    if (!listing) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+    if (listing.isArchived) {
+      return res
+        .status(400)
+        .json({ message: "This listing is no longer accepting new bookings." });
     }
 
     // Validate dates
@@ -91,3 +103,23 @@ exports.getBookingsByUser = async (req, res) => {
     return res.status(500).json({ message: "Failed to fetch bookings" });
   }
 };
+
+// GET /bookings/listing/:id - get bookings for a listing
+exports.getBookingsByListing = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid listing id" });
+    }
+    
+    const listingBookings = await Booking.find({
+      listingId: new mongoose.Types.ObjectId(id),
+    }).populate("userId", "firstName lastName email");
+    
+    return res.json({ bookings: listingBookings });
+  } catch (error) {
+    console.error("Error fetching listing bookings:", error);
+    return res.status(500).json({ message: "Failed to fetch bookings" });
+  }
+};
+ 

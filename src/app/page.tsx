@@ -161,7 +161,8 @@ export default function Home() {
                       <span className="text-lg font-bold text-primary-600">${listing.pricePerNight}/night</span>
                       <div className="flex items-center text-sm text-gray-500">
                         <span className="text-secondary-500">★</span>
-                        <span className="ml-1">{listing.rating || '4.8'}</span>
+                        <span className="ml-1">{listing.averageRating ? listing.averageRating.toFixed(1) : '0.0'}</span>
+                        <span className="ml-1">({listing.reviewCount} review{listing.reviewCount === 1 ? '' : 's'})</span>
                       </div>
                     </div>
                     <Button
@@ -178,7 +179,7 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-            </div>
+        </div>
           )}
         </Card>
 
