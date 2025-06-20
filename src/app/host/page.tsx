@@ -214,27 +214,27 @@ function HostDashboard() {
       setEditingListing(null);
       resetForm();
       fetchListings();
-    } catch (error) {
+    } catch {
       showAlert('Failed to save listing. Please try again.', 'error');
     }
   };
 
-  const handleEditListing = (listing: Listing) => {
-    if (listing.isArchived) {
+  const handleEditListing = (editListing: Listing) => {
+    if (editListing.isArchived) {
       showAlert('Cannot edit archived listings. Please unarchive first.', 'warning');
       return;
     }
-    setEditingListing(listing);
+    setEditingListing(editListing);
     setListingForm({
-      title: listing.title,
-      description: listing.description,
-      location: listing.location,
-      pricePerNight: listing.pricePerNight,
-      bedrooms: listing.bedrooms,
-      bathrooms: listing.bathrooms,
-      maxGuests: listing.maxGuests,
-      amenities: listing.amenities,
-      images: listing.images
+      title: editListing.title,
+      description: editListing.description,
+      location: editListing.location,
+      pricePerNight: editListing.pricePerNight,
+      bedrooms: editListing.bedrooms,
+      bathrooms: editListing.bathrooms,
+      maxGuests: editListing.maxGuests,
+      amenities: editListing.amenities,
+      images: editListing.images
     });
     setShowCreateForm(true);
   };
@@ -699,8 +699,8 @@ function HostLogin() {
         }
         await hostRegister(formData.username, formData.password, formData.secret);
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }

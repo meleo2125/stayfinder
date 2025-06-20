@@ -149,7 +149,7 @@ export default function ListingDetail() {
         0,
         () => router.push('/profile')
       );
-    } catch (err: unknown) {
+    } catch {
       showAlert('Failed to create booking. Please try again.', 'error');
     } finally {
       setBookingLoading(false);
@@ -191,7 +191,7 @@ export default function ListingDetail() {
       setUserReview({ user: { _id: user!.id, firstName: user!.firstName, lastName: user!.lastName, email: user!.email }, rating: reviewStars, review: reviewText });
       setEditingReview(false);
       showAlert('Review submitted!', 'success');
-    } catch (err: unknown) {
+    } catch {
       showAlert('Failed to submit review. Please try again.', 'error');
     } finally {
       setReviewLoading(false);
