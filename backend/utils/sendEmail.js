@@ -32,7 +32,7 @@ const sendOTPEmail = async (email, otp) => {
 
 const sendPasswordResetEmail = async (email, resetToken) => {
   try {
-    const resetUrl = `http://localhost:3000/change-password/${resetToken}`;
+    const resetUrl = `${process.env.NEXTAUTH_URL}/change-password/${resetToken}`;
     const mailOptions = {
       from: process.env.SMTP_USER,
       to: email,
