@@ -18,10 +18,18 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: [process.env.NEXTAUTH_URL, "http://localhost:3000"].filter(Boolean),
+    origin: [
+      process.env.NEXTAUTH_URL,
+      "http://localhost:3000",
+      "https://stayfinderapp.vercel.app",
+      "https://stayfinder-cmi1.onrender.com",
+    ].filter(Boolean),
     credentials: true,
   })
 );
+
+// Handle preflight OPTIONS requests for all routes
+app.options("*", cors());
 
 // Session configuration
 app.use(
