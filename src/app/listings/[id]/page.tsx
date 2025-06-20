@@ -467,7 +467,7 @@ export default function ListingDetail() {
                             {[1,2,3,4,5].map(star => (
                               <span key={star} className={`text-lg ${r.rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
                             ))}
-                            <span className="ml-2 font-medium text-gray-900">{r.user.firstName} {r.user.lastName}</span>
+                            <span className="ml-2 font-medium text-gray-900">{typeof r.user === 'object' ? `${r.user.firstName} ${r.user.lastName}` : 'User'}</span>
                             <span className="ml-2 text-xs text-gray-500">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
                             <button
                               type="button"
