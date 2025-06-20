@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
@@ -29,6 +29,25 @@ export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [showResults, setShowResults] = useState(false);
+
+  // Filter listings by title, location, or description
+  const filteredListings = useMemo(() => search.trim()
+    ? listings.filter(l =>
+        l.title.toLowerCase().includes(search.toLowerCase()) ||
+        l.location.toLowerCase().includes(search.toLowerCase()) ||
+        (l.description && l.description.toLowerCase().includes(search.toLowerCase()))
+      ).slice(0, 6)
+    : [], [search, listings]);
+
+  // Hide results on click outside
+  useEffect(() => {
+    if (!showResults) return;
+    function handleClick() { setShowResults(false); }
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, [showResults]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -60,7 +79,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navigation />
+      <Navigation listings={listings} />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -72,6 +91,61 @@ export default function Home() {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Discover amazing properties and find your perfect stay for your next adventure
           </p>
+        </div>
+        {/* Live Search Bar Below Welcome Message */}
+        <div className="flex justify-center mb-8">
+          <div className="relative w-full max-w-md">
+            <input
+              type="text"
+              className="w-full h-11 pl-4 pr-10 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all duration-200 shadow-sm text-base"
+              placeholder="Search by name, location, etc..."
+              value={search}
+              onChange={e => { setSearch(e.target.value); setShowResults(true); }}
+              onFocus={() => search && setShowResults(true)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && search.trim()) {
+                  setShowResults(false);
+                  router.push(`/search?query=${encodeURIComponent(search.trim())}`);
+                  setSearch('');
+                }
+              }}
+            />
+            <span
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+              onClick={e => {
+                e.stopPropagation();
+                if (search.trim()) {
+                  setShowResults(false);
+                  router.push(`/search?query=${encodeURIComponent(search.trim())}`);
+                  setSearch('');
+                }
+              }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+              </svg>
+            </span>
+            {/* Floating Results Tile */}
+            {showResults && filteredListings.length > 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto animate-fade-in">
+                {filteredListings.map(listing => (
+                  <div
+                    key={listing._id}
+                    className="px-4 py-3 cursor-pointer hover:bg-primary-50 border-b last:border-b-0 border-gray-100 flex flex-col"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setShowResults(false);
+                      setSearch('');
+                      router.push(`/listings/${listing._id}`);
+                    }}
+                  >
+                    <span className="font-semibold text-gray-900">{listing.title}</span>
+                    <span className="text-sm text-gray-500">{listing.location}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Dashboard Grid */}
@@ -194,32 +268,9 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-        </div>
+            </div>
           )}
         </Card>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 slide-up" style={{ animationDelay: '0.4s' }}>
-          <Card>
-            <h3 className="text-xl font-bold text-gray-900 mb-4 font-heading">Start Exploring</h3>
-            <p className="text-gray-600 mb-4">
-              Browse our curated collection of unique properties and find your perfect getaway.
-            </p>
-            <Button variant="primary">
-              Browse Properties
-            </Button>
-          </Card>
-
-          <Card>
-            <h3 className="text-xl font-bold text-gray-900 mb-4 font-heading">Your Account</h3>
-            <p className="text-gray-600 mb-4">
-              Manage your bookings, preferences, and account settings.
-            </p>
-            <Button variant="outline">
-              View Profile
-            </Button>
-          </Card>
-        </div>
       </main>
     </div>
   );
