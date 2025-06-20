@@ -42,7 +42,7 @@ interface Listing {
 }
 
 function HostListingDetailPage() {
-  const { host, isAuthenticated, loading: authLoading } = useHostAuth();
+  const { isAuthenticated, loading: authLoading } = useHostAuth();
   const router = useRouter();
   const params = useParams();
   const listingId = params.id as string;

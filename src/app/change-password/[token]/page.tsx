@@ -27,7 +27,7 @@ export default function ChangePassword({ params }: { params: Promise<{ token: st
         if (!response.ok) {
           setIsTokenValid(false);
         }
-      } catch (err) {
+      } catch {
         setIsTokenValid(false);
       }
     };

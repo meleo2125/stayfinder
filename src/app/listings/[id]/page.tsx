@@ -142,7 +142,6 @@ export default function ListingDetail() {
 
       if (!response.ok) throw new Error('Failed to create booking');
 
-      const booking = await response.json();
       triggerProfileBlink();
       showAlert(
         'Booking created successfully! You can view your booking in your profile.', 
@@ -150,8 +149,6 @@ export default function ListingDetail() {
         0,
         () => router.push('/profile')
       );
-      // Remove immediate redirect - let user click "Okay" first
-      // router.push('/profile');
     } catch (err: unknown) {
       showAlert('Failed to create booking. Please try again.', 'error');
     } finally {

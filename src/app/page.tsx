@@ -8,10 +8,25 @@ import Navigation from '@/components/Navigation';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 
+interface Listing {
+  _id: string;
+  title: string;
+  description: string;
+  location: string;
+  pricePerNight: number;
+  bedrooms: number;
+  bathrooms: number;
+  maxGuests: number;
+  amenities: string[];
+  images: string[];
+  averageRating?: number;
+  reviewCount?: number;
+}
+
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
-  const [listings, setListings] = useState<any[]>([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 

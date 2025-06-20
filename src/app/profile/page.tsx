@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Button from '@/components/Button';
@@ -31,16 +31,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-      return;
-    }
-
-    fetchBookings();
-  }, [isAuthenticated, router, fetchBookings]);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
@@ -56,7 +47,16 @@ export default function ProfilePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+
+    fetchBookings();
+  }, [isAuthenticated, router, fetchBookings]);
 
   const getBookingStatus = (checkInDate: string, status: string) => {
     const today = new Date();

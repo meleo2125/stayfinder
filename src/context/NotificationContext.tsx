@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import axios from 'axios';
 
 interface NotificationContextType {
@@ -64,12 +64,12 @@ export function NotificationFeedProvider({ userId, children }: { userId: string,
 
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (!userId) return;
     const res = await axios.get(`${baseUrl}/api/notifications/user/${userId}`);
     setNotifications(res.data.notifications);
     setUnseenCount(res.data.notifications.filter((n: Notification) => !n.seen).length);
-  };
+  }, [userId, baseUrl]);
 
   const markAllAsSeen = async () => {
     if (!userId) return;
