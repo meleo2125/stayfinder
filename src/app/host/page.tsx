@@ -568,8 +568,8 @@ function HostDashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {listings.map((listing) => (
-                  <tr key={listing._id} className={`hover:bg-gray-50 ${listing.isArchived ? 'bg-gray-100' : ''}`}>
+                {listings.map((row) => (
+                  <tr key={row._id} className={`hover:bg-gray-50 ${row.isArchived ? 'bg-gray-100' : ''}`}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="h-12 w-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
@@ -579,53 +579,53 @@ function HostDashboard() {
                         </div>
                         <div>
                           <div className="text-sm font-medium text-gray-900 flex items-center gap-2">
-                            {listing.title}
-                            {listing.isArchived && (
+                            {row.title}
+                            {row.isArchived && (
                               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                                 Archived
                               </span>
                             )}
                           </div>
-                          <div className="text-sm text-gray-500">{listing.bedrooms} bed, {listing.bathrooms} bath</div>
-                          {listing.isArchived && listing.archivedAt && (
+                          <div className="text-sm text-gray-500">{row.bedrooms} bed, {row.bathrooms} bath</div>
+                          {row.isArchived && row.archivedAt && (
                             <div className="text-xs text-gray-400">
-                              Archived on {new Date(listing.archivedAt).toLocaleDateString()}
+                              Archived on {new Date(row.archivedAt).toLocaleDateString()}
                             </div>
                           )}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {listing.location}
+                      {row.location}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      ${listing.pricePerNight}/night
+                      ${row.pricePerNight}/night
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <span className="text-secondary-500">★</span>
-                        <span className="ml-1 text-sm text-gray-900">{listing.averageRating ? listing.averageRating.toFixed(1) : '0.0'}</span>
-                        <span className="ml-1 text-xs text-gray-500">({listing.reviewCount} review{listing.reviewCount === 1 ? '' : 's'})</span>
+                        <span className="ml-1 text-sm text-gray-900">{row.averageRating ? row.averageRating.toFixed(1) : '0.0'}</span>
+                        <span className="ml-1 text-xs text-gray-500">({row.reviewCount} review{row.reviewCount === 1 ? '' : 's'})</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button
-                          onClick={() => router.push(`/host/listings/${listing._id}`)}
+                          onClick={() => router.push(`/host/listings/${row._id}`)}
                           className="text-primary-600 hover:text-primary-900"
                         >
                           View
                         </button>
-                        {!listing.isArchived ? (
+                        {!row.isArchived ? (
                           <>
                             <button
-                              onClick={() => handleEditListing(listing)}
+                              onClick={() => handleEditListing(row)}
                               className="text-secondary-600 hover:text-secondary-900"
                             >
                               Edit
                             </button>
                             <button
-                              onClick={() => handleDeleteListing(listing._id)}
+                              onClick={() => handleDeleteListing(row._id)}
                               className="text-red-600 hover:text-red-900"
                             >
                               Delete
@@ -633,7 +633,7 @@ function HostDashboard() {
                           </>
                         ) : (
                           <button
-                            onClick={() => handleUnarchiveListing(listing._id)}
+                            onClick={() => handleUnarchiveListing(row._id)}
                             className="text-green-600 hover:text-green-900"
                           >
                             Unarchive
