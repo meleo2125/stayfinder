@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const cors = require("cors");
 const path = require("path");
+const MongoStore = require("connect-mongo");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env.local") });
 
 const authRoutes = require("./routes/authRoutes");
@@ -28,6 +29,7 @@ app.use(
     secret: process.env.NEXTAUTH_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
     cookie: {
       secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
