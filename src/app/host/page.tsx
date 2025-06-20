@@ -9,6 +9,7 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import HostNavigation from '@/components/HostNavigation';
+import Image from 'next/image';
 
 interface Listing {
   _id: string;
@@ -52,7 +53,15 @@ interface Booking {
   status: string;
 }
 
-function ArchiveListingModal({ open, onClose, listing, bookings, onArchive }: any) {
+interface ArchiveListingModalProps {
+  open: boolean;
+  onClose: () => void;
+  listing: Listing | null;
+  bookings: Booking[];
+  onArchive: (choice: 'allow' | 'cancel', reason?: string) => Promise<void>;
+}
+
+function ArchiveListingModal({ open, onClose, listing, bookings, onArchive }: ArchiveListingModalProps) {
   const [loading, setLoading] = useState(false);
   const [choice, setChoice] = useState<'allow' | 'cancel'>('allow');
   const [reason, setReason] = useState('');
@@ -150,7 +159,7 @@ function HostDashboard() {
   const [newAmenity, setNewAmenity] = useState('');
   const [newImage, setNewImage] = useState('');
 
-  const { showAlert, showConfirm } = useAlert();
+  const { showAlert } = useAlert();
 
   const [archiveModal, setArchiveModal] = useState<{ open: boolean, listing: Listing | null, bookings: Booking[] }>({ open: false, listing: null, bookings: [] });
 
@@ -492,10 +501,12 @@ function HostDashboard() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {listingForm.images.map((image, index) => (
                     <div key={index} className="relative">
-                      <img
+                      <Image
                         src={image}
                         alt={`Listing ${index + 1}`}
                         className="w-full h-24 object-cover rounded-lg"
+                        width={96}
+                        height={160}
                         onError={(e) => {
                           e.currentTarget.src = 'https://via.placeholder.com/300x200?text=Image+Not+Found';
                         }}

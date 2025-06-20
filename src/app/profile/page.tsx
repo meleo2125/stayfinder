@@ -38,7 +38,7 @@ export default function ProfilePage() {
     }
 
     fetchBookings();
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router, fetchBookings]);
 
   const fetchBookings = async () => {
     if (!user) return;

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
-import Navigation from '@/components/Navigation';
 import Card from '@/components/Card';
 import { HostAuthProvider, useHostAuth } from '@/context/HostAuthContext';
 import HostNavigation from '@/components/HostNavigation';
@@ -42,7 +41,7 @@ interface Listing {
   archivedAt?: string;
 }
 
-function HostListingDetailPage(props) {
+function HostListingDetailPage() {
   const { host, isAuthenticated, loading: authLoading } = useHostAuth();
   const router = useRouter();
   const params = useParams();

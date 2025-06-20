@@ -5,7 +5,6 @@ import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { AlertProvider } from "@/context/AlertContext";
 import { HostAuthProvider } from '@/context/HostAuthContext';
-import NotificationTile from '@/components/NotificationTile';
 import NotificationFeedWrapper from '@/components/NotificationFeedWrapper';
 
 const inter = Inter({ 

@@ -51,8 +51,8 @@ export default function Register() {
       // Store userId in localStorage for OTP verification
       localStorage.setItem('userId', data.userId);
       router.push('/verify-otp');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }

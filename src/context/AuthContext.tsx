@@ -85,8 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('loginTimestamp', Date.now().toString());
       setUser(data.user);
       router.push('/');
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'An error occurred');
       throw error;
     }
   };

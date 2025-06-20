@@ -40,7 +40,7 @@ export interface Notification {
   _id: string;
   type: string;
   message: string;
-  data?: any;
+  data?: Record<string, unknown>;
   seen: boolean;
   createdAt: string;
 }
@@ -89,7 +89,7 @@ export function NotificationFeedProvider({ userId, children }: { userId: string,
     // Optionally, poll for new notifications every X seconds
     // const interval = setInterval(fetchNotifications, 60000);
     // return () => clearInterval(interval);
-  }, [userId]);
+  }, [userId, fetchNotifications]);
 
   return (
     <NotificationFeedContext.Provider value={{ notifications, unseenCount, fetchNotifications, markAllAsSeen, markOneAsSeen, open, setOpen }}>

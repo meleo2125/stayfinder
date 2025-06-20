@@ -110,8 +110,8 @@ export default function ListingDetail() {
         }
         setLoading(false);
       })
-      .catch(err => {
-        setError(err.message);
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : 'An error occurred');
         setLoading(false);
       });
   }, [isAuthenticated, router, listingId, user]);
@@ -152,7 +152,7 @@ export default function ListingDetail() {
       );
       // Remove immediate redirect - let user click "Okay" first
       // router.push('/profile');
-    } catch (err) {
+    } catch (err: unknown) {
       showAlert('Failed to create booking. Please try again.', 'error');
     } finally {
       setBookingLoading(false);
@@ -194,7 +194,7 @@ export default function ListingDetail() {
       setUserReview({ user: { _id: user!.id, firstName: user!.firstName, lastName: user!.lastName, email: user!.email }, rating: reviewStars, review: reviewText });
       setEditingReview(false);
       showAlert('Review submitted!', 'success');
-    } catch (err) {
+    } catch (err: unknown) {
       showAlert('Failed to submit review. Please try again.', 'error');
     } finally {
       setReviewLoading(false);

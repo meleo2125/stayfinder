@@ -45,8 +45,8 @@ export default function VerifyOTP() {
 
       localStorage.removeItem('userId');
       router.push('/login');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -160,7 +160,7 @@ export default function VerifyOTP() {
                   </svg>
                 </div>
                 <div className="text-sm text-primary-800">
-                  <p className="font-medium">Didn't receive the code?</p>
+                  <p className="font-medium">Didn&apos;t receive the code?</p>
                   <p className="mt-1">Check your spam folder or contact support if you continue to have issues.</p>
                 </div>
               </div>
