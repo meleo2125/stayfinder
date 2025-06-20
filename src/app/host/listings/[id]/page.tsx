@@ -331,7 +331,7 @@ function HostListingDetailPage() {
   );
 }
 
-export default function HostListingDetailWrapper(props: any) {
+export default function HostListingDetailWrapper(props: Record<string, unknown>) {
   return (
     <HostAuthProvider>
       <HostListingDetailPage {...props} />
