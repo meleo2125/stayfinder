@@ -31,6 +31,7 @@ export default function Home() {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [showResults, setShowResults] = useState(false);
+  const [showAllFeatured, setShowAllFeatured] = useState(false);
 
   // Filter listings by title, location, or description
   const filteredListings = useMemo(() => search.trim()
@@ -72,6 +73,9 @@ export default function Home() {
         setLoading(false);
       });
   }, [isAuthenticated]);
+
+  // In the Featured Section, use this to determine which listings to show
+  const featuredToShow = showAllFeatured ? listings : listings.slice(0, 3);
 
   if (!isAuthenticated) {
     return null;
@@ -198,9 +202,11 @@ export default function Home() {
         <Card padding="lg" className="mb-8 slide-up" style={{ animationDelay: '0.3s' }}>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-2xl font-bold text-gray-900 font-heading">Featured Properties</h3>
-            <Button variant="primary">
-              View All
-            </Button>
+            {listings.length > 3 && (
+              <Button variant="primary" onClick={() => setShowAllFeatured(v => !v)}>
+                {showAllFeatured ? "Show Less" : "View All"}
+              </Button>
+            )}
           </div>
           {loading ? (
             <div className="text-center py-12 text-gray-500">Loading properties...</div>
@@ -218,7 +224,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {listings.map((listing) => (
+              {featuredToShow.map((listing) => (
                 <div 
                   key={listing._id} 
                   className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer transform hover:scale-105"
