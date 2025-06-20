@@ -56,12 +56,11 @@ interface Booking {
 interface ArchiveListingModalProps {
   open: boolean;
   onClose: () => void;
-  listing: Listing | null;
   bookings: Booking[];
   onArchive: (choice: 'allow' | 'cancel', reason?: string) => Promise<void>;
 }
 
-function ArchiveListingModal({ open, onClose, listing, bookings, onArchive }: ArchiveListingModalProps) {
+function ArchiveListingModal({ open, onClose, bookings, onArchive }: ArchiveListingModalProps) {
   const [loading, setLoading] = useState(false);
   const [choice, setChoice] = useState<'allow' | 'cancel'>('allow');
   const [reason, setReason] = useState('');
@@ -656,7 +655,6 @@ function HostDashboard() {
         <ArchiveListingModal
           open={archiveModal.open}
           onClose={() => setArchiveModal({ open: false, listing: null, bookings: [] })}
-          listing={archiveModal.listing}
           bookings={archiveModal.bookings}
           onArchive={handleArchive}
         />
