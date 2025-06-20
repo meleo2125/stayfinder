@@ -1,5 +1,5 @@
 const Host = require("../models/Host");
-const SECRET_KEY = "sunset";
+const SECRET_KEY = process.env.HOST_SECRET_KEY;
 
 // POST /api/host/register
 exports.register = async (req, res) => {
@@ -7,6 +7,9 @@ exports.register = async (req, res) => {
     const { username, password, secret } = req.body;
     if (!username || !password || !secret) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+    if (!SECRET_KEY) {
+      return res.status(500).json({ message: "Host secret key is not configured on the server" });
     }
     if (secret !== SECRET_KEY) {
       return res.status(403).json({ message: "Invalid secret key" });

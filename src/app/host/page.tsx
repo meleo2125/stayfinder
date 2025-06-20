@@ -690,11 +690,6 @@ function HostLogin() {
       if (mode === 'login') {
         await hostLogin(formData.username, formData.password);
       } else {
-        if (formData.password !== formData.secret) {
-          setError('Passwords do not match');
-          setIsLoading(false);
-          return;
-        }
         await hostRegister(formData.username, formData.password, formData.secret);
       }
     } catch (err: unknown) {
