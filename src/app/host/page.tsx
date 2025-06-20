@@ -125,7 +125,7 @@ function ArchiveListingModal({ open, onClose, bookings, onArchive }: ArchiveList
         </div>
         <div className="flex gap-4 justify-end">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button variant="danger" isLoading={loading} onClick={async () => {
+          <Button variant="primary" isLoading={loading} onClick={async () => {
             setLoading(true);
             await onArchive(choice, reason);
             setLoading(false);
