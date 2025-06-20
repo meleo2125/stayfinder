@@ -61,7 +61,6 @@ export default function SearchPage() {
   // Filter listings by query and filters
   const filtered = useMemo(() => {
     let result = listings;
-    // Query filter
     if (query.trim()) {
       result = result.filter(l =>
         l.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -69,24 +68,20 @@ export default function SearchPage() {
         (l.description && l.description.toLowerCase().includes(query.toLowerCase()))
       );
     }
-    // Price filter
     if (priceMin) {
       result = result.filter(l => l.pricePerNight >= Number(priceMin));
     }
     if (priceMax) {
       result = result.filter(l => l.pricePerNight <= Number(priceMax));
     }
-    // Bedrooms filter
     if (minBedrooms) {
       result = result.filter(l => l.bedrooms >= Number(minBedrooms));
     }
-    // Amenities filter
     if (selectedAmenities.length > 0) {
       result = result.filter(l =>
         selectedAmenities.every(a => l.amenities && l.amenities.includes(a))
       );
     }
-    // Sorting
     if (sortBy === "price-asc") {
       result = [...result].sort((a, b) => a.pricePerNight - b.pricePerNight);
     } else if (sortBy === "price-desc") {
@@ -198,7 +193,6 @@ export default function SearchPage() {
                   <Button
                     variant="primary"
                     size="sm"
-                    className="w-full"
                     onClick={e => {
                       e.stopPropagation();
                       router.push(`/listings/${listing._id}`);
